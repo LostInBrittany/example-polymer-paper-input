@@ -1,0 +1,60 @@
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-button/paper-button.html">
+
+<dom-module name="example-app" >
+  <template>
+    
+    <style>
+      :host {
+        display: inline-block;
+      }
+      .row,
+      paper-input {
+        margin-bottom: 20px;
+      }
+    </style>
+
+    <div class="row">
+      <div>Insert a date</div>
+      <paper-input
+        auto-validate
+        pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" 
+        error-message="YYYY-MM-DD"
+        invalid="{{isInvalidDate}}"
+        value="{{inputDate}}"
+      ></paper-input>
+    </div>
+    <div class="row">
+      <div>Your date as timestamp</div>
+      <div>{{dateAsTimestamp}}</div>
+  </template>
+
+  <script>
+    Polymer({
+      is: "example-app",
+      properties: {
+        inputDate: {
+          type: String,
+          value: ""
+        },
+        dateAsTimestamp: {
+          type: String,
+          computed: "getTimestamp(isInvalidDate)"
+        },
+        isInvalidDate: {
+          type: Boolean,
+          value: true
+        }
+      },
+      getTimestamp: function() {
+        if (this.isInvalidDate) {
+          return "";
+        }
+        var ts = new Date(this.inputDate).getTime();
+        console.log("[getTimestamp] ts (ms): ",ts);
+        return ts*1000;
+      } 
+
+    });    
+  </script>
+</dom-module>
